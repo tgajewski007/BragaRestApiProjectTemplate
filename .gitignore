@@ -1,0 +1,5 @@
+composer.phar
+/vendor/
+/composer.lock
+/src/config/devEnv.php
+/loggerConfig.xml

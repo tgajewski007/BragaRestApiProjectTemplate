@@ -1,0 +1,56 @@
+version: '2'
+services:    
+    db:
+        container_name: change-me-mysql
+        image: mysql:5.7
+        restart: always
+        volumes:
+          - change-me-db-data:/var/lib/mysql
+          - change-me-db-config:/etc/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: change-me
+            MYSQL_DATABASE: change-me
+            MYSQL_USER: change-me
+            MYSQL_PASSWORD: change-me
+            ESB_ENDPOINT: https://auth.piechocki.company
+            ISSUERREALMS: https://auth.piechocki.company/auth/realms/interior
+            ESB_LOGIN: change-me
+            ESB_PASSWORD: change-me      
+            AUTH_CLIENT_NAME: change-me
+            AUTH_CLIENT_SECRET: change-me            
+            TZ: Europe/Warsaw
+        ports:
+          - 3306:3306
+        networks:
+          - change-me-network
+        #mem_limit: 2G
+        #memswap_limit: 0
+        #mem_reservation: 1G
+    php:
+        build: .
+        container_name: change-me-php
+        environment:
+            DBPASS: 1
+            DBSCHEMA: project
+            DBUSER: project
+            DBCONNECTIONSTRING: mysql:host=db
+            LOG4PHPCONFIGFILE: /var/www/config/loggerConfig.xml
+            TZ: Europe/Warsaw
+            VERSION: 1.0.0   
+        ports:
+          - '80:80'
+        restart: always
+        volumes:
+          - change-me-app-log:/var/www/log
+          - change-me-app-config:/var/www/config
+        networks:
+          - change-me-network
+        depends_on:
+          - db
+networks:
+    change-me-network:
+volumes: 
+    change-me-app-log:  
+    change-me-app-config:   
+    change-me-db-data:
+    change-me-db-config: 

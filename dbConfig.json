@@ -1,0 +1,13 @@
+{
+    "user": "",
+    "pass": "",
+    "schema": "",
+    "connection-string": "",
+    "author": "Tomasz Gajewski",
+    "output-folder": "src",
+    "dao.xml-folder": "../Doc",
+    "error-prefix": "BP:",
+    "db-driver": "mysql",
+    "project-name": "BragaProject",
+    "namespace": "braga\\project\\"
+}

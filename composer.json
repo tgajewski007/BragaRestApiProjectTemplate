@@ -1,0 +1,28 @@
+{
+	"name" : "braga/restapi-template",
+	"description" : "Szablon rest api dla frameworku Braga",
+	"type" : "project",
+	"license" : "MIT",
+	"autoload" : {
+		"psr-4" : {
+			"braga\\project\\" : "src"
+		},
+		"files" : [
+			"src/config/setEnv.php"
+		]
+	},
+	"require" : {
+		"braga/db" : "~2.1",
+		"braga/tools" : "~2.2",
+		"lcobucci/jwt" : "~3.2",
+		"netresearch/jsonmapper" : "~1.4",
+		"php" : "~7.2",
+		"ext-mbstring" : "*",
+		"ext-PDO" : "*",
+		"ext-pdo_mysql" : "*",
+		"ext-mysqli" : "*"
+	},
+	"require-dev" : {
+		"braga/dao-generator" : "~2.5"
+	}
+}
