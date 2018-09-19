@@ -16,6 +16,12 @@ if(file_exists(__DIR__ . "/devEnv.php"))
 	require_once __DIR__ . "/devEnv.php";
 }
 
+/* DB CONFIGURACTION */
+define("DB_CONNECTION_STRING", \braga\project\config\Config::getDbConnectionString());
+define("DB_SCHEMA", \braga\project\config\Config::getDbSchema());
+define("DB_USER", \braga\project\config\Config::getDbUser());
+define("DB_PASS", \braga\project\config\Config::getDbPassword());
+
 /* PHP DATE FORMAT DEFAULT */
 define("PHP_DATE_FORMAT", "Y-m-d");
 define("PHP_TIME_FORMAT", "H:i:s");
