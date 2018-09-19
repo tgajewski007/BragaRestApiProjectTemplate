@@ -71,29 +71,4 @@ class Config
 		return self::getEnviromentVariable("LOG4PHPCONFIGFILE");
 	}
 	// -----------------------------------------------------------------------------------------------------------------
-	public static function getEsbServiceBaseUrl()
-	{
-		return self::getEnviromentVariable("ESB_ENDPOINT");
-	}
-	// -----------------------------------------------------------------------------------------------------------------
-	public static function getEsbLogin()
-	{
-		return self::getEnviromentVariable("ESB_LOGIN");
-	}
-	// -----------------------------------------------------------------------------------------------------------------
-	public static function getEsbPassword()
-	{
-		return self::getEnviromentVariable("ESB_PASSWORD");
-	}
-	// -----------------------------------------------------------------------------------------------------------------
-	public static function getAuthClientName()
-	{
-		return self::getEnviromentVariable("AUTH_CLIENT_NAME");
-	}
-	// -----------------------------------------------------------------------------------------------------------------
-	public static function getAuthClientSecret()
-	{
-		return self::getEnviromentVariable("AUTH_CLIENT_SECRET");
-	}
-	// -----------------------------------------------------------------------------------------------------------------
 }
