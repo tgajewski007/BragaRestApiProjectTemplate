@@ -95,7 +95,7 @@ class InteriorSsoPerms
 				{
 					throw new \Exception("BP:90201 Nieobsugiwany algorytm weryfikacji tokenu", 90201);
 				}
-				$key = new Key(KeyStore::get($token->getHeader("kod"))->getPublicKey());
+				$key = new Key(KeyStore::get($token->getHeader("kid"))->getPublicKey());
 
 				if($token->verify($signer, $key))
 				{
