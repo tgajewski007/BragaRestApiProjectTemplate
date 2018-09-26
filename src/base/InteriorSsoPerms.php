@@ -173,21 +173,20 @@ class InteriorSsoPerms
 	// -----------------------------------------------------------------------------------------------------------------
 	public static function authorize($roleName)
 	{
-		$realmAccess = self::getInstance()->jwt->getClaim("resource_access");
-		if(isset($realmAccess->{self::KEYCLOAK_CLIENT_NAME}))
+		if(!empty($roleName))
 		{
-			if(array_search($roleName, $realmAccess->{self::KEYCLOAK_CLIENT_NAME}->roles) !== false)
+			$realmAccess = self::getInstance()->jwt->getClaim("resource_access");
+			if(isset($realmAccess->{self::KEYCLOAK_CLIENT_NAME}))
 			{
-				return true;
+				if(array_search($roleName, $realmAccess->{self::KEYCLOAK_CLIENT_NAME}->roles) === false)
+				{
+					throw new \Exception("BP:90207 Błąd autoryzacji", 90207);
+				}
 			}
 			else
 			{
-				return false;
+				throw new \Exception("BP:90208 Błąd autoryzacji", 90208);
 			}
-		}
-		else
-		{
-			throw new \Exception("BP:90207 Błąd autoryzacji", 90207);
 		}
 	}
 	// -----------------------------------------------------------------------------------------------------------------
