@@ -16,7 +16,10 @@ use braga\project\obj\KeyStore;
  *
  */
 class InteriorSsoPerms
-{ // -----------------------------------------------------------------------------------------------------------------
+{
+	// -----------------------------------------------------------------------------------------------------------------
+	const KEYCLOAK_CLIENT_NAME = "project";
+	// -----------------------------------------------------------------------------------------------------------------
 	/**
 	 * @var InteriorSsoPerms
 	 */
@@ -60,10 +63,11 @@ class InteriorSsoPerms
 		return self::$instance;
 	}
 	// -----------------------------------------------------------------------------------------------------------------
-	private function check()
+	private function check($roleName)
 	{
 		$tokenString = self::getTokenStringFromHttpHeader();
 		$this->jwt = self::getTokenFromString($tokenString);
+		$this->authorize($roleName);
 	}
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
@@ -75,8 +79,16 @@ class InteriorSsoPerms
 	{
 		$parser = new Parser();
 		$token = $parser->parse($jwt);
+		$timeSkew = time() - $token->getClaim("iat");
+		if($timeSkew > -60 && $timeSkew < 0)
+		{
+			$data = new ValidationData($token->getClaim("iat"));
+		}
+		else
+		{
+			$data = new ValidationData();
+		}
 
-		$data = new ValidationData();
 		$data->setIssuer(Config::getIssuerRealms());
 		$typ = $token->getClaim("typ");
 		if($typ == "Bearer")
@@ -159,9 +171,29 @@ class InteriorSsoPerms
 		throw new \Exception("BP:90206 Brak nagłówka Authorization", 90206);
 	}
 	// -----------------------------------------------------------------------------------------------------------------
-	public static function pageOpen()
+	public static function authorize($roleName)
 	{
-		InteriorSsoPerms::getInstance()->check();
+		$realmAccess = self::getInstance()->jwt->getClaim("resource_access");
+		if(isset($realmAccess->{self::KEYCLOAK_CLIENT_NAME}))
+		{
+			if(array_search($roleName, $realmAccess->{self::KEYCLOAK_CLIENT_NAME}->roles) !== false)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			throw new \Exception("BP:90207 Błąd autoryzacji", 90207);
+		}
+	}
+	// -----------------------------------------------------------------------------------------------------------------
+	public static function pageOpen($roleName)
+	{
+		InteriorSsoPerms::getInstance()->check($roleName);
 	}
 	// -----------------------------------------------------------------------------------------------------------------
 }
