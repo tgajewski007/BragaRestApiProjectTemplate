@@ -31,4 +31,7 @@ if(getenv("VERSION") === false)
 {
 	putenv("VERSION=1.0.0");
 }
-
+if(getenv("VERSION") === false)
+{
+	putenv("VERSION=1.0.0");
+}
