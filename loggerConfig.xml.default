@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<configuration xmlns="http://logging.apache.org/log4php/">
+	<appender
+		name="main"
+		class="LoggerAppenderDailyFile">
+		<layout class="LoggerLayoutPattern">
+			<param
+				name="conversionPattern"
+				value="%date{Y-m-d H:i:s,u};%level;%message;%throwable%newline" />
+		</layout>
+		<param
+			name="file"
+			value="o:/wwwroot/BragaProjectTemplate/log/BragaProjectTemplate.%s.log" />
+		<param
+			name="datePattern"
+			value="Y-m-d" />
+	</appender>
+	<appender
+		name="http"
+		class="LoggerAppenderDailyFile">
+		<layout class="LoggerLayoutPattern">
+			<param
+				name="conversionPattern"
+				value="%date{Y-m-d H:i:s,u};%level;%message;%throwable%newline" />
+		</layout>
+		<param
+			name="file"
+			value="o:/wwwroot/BragaProjectTemplate/log/http.%s.log" />
+		<param
+			name="datePattern"
+			value="Y-m-d" />
+	</appender>
+	<appender
+		name="php"
+		class="LoggerAppenderDailyFile">
+		<layout class="LoggerLayoutPattern">
+			<param
+				name="conversionPattern"
+				value="%date{Y-m-d H:i:s,u};%level;%message;%throwable%newline" />
+		</layout>
+		<param
+			name="file"
+			value="o:/wwwroot/BragaProjectTemplate/log/php.%s.log" />
+		<param
+			name="datePattern"
+			value="Y-m-d" />
+	</appender>
+	<appender
+		name="braga"
+		class="LoggerAppenderDailyFile">
+		<layout class="LoggerLayoutPattern">
+			<param
+				name="conversionPattern"
+				value="%date{Y-m-d H:i:s,u};%level;%message;%throwable%newline" />
+		</layout>
+		<param
+			name="file"
+			value="o:/wwwroot/BragaProjectTemplate/log/braga.%s.log" />
+		<param
+			name="datePattern"
+			value="Y-m-d" />
+	</appender>
+	<appender
+		name="cron"
+		class="LoggerAppenderDailyFile">
+		<layout class="LoggerLayoutPattern">
+			<param
+				name="conversionPattern"
+				value="%date{Y-m-d H:i:s,u};%level;%message;%throwable%newline" />
+		</layout>
+		<param
+			name="file"
+			value="o:/wwwroot/BragaProjectTemplate/log/cron.%s.log" />
+		<param
+			name="datePattern"
+			value="Y-m-d" />
+	</appender>
+	<appender
+		name="mobi"
+		class="LoggerAppenderDailyFile">
+		<layout class="LoggerLayoutPattern">
+			<param
+				name="conversionPattern"
+				value="%date{Y-m-d H:i:s,u};%level;%message;%throwable%newline" />
+		</layout>
+		<param
+			name="file"
+			value="o:/wwwroot/BragaProjectTemplate/log/mobi.%s.log" />
+		<param
+			name="datePattern"
+			value="Y-m-d" />
+	</appender>
+	<logger name="main">
+		<level value="trace" />
+		<appender_ref ref="main" />
+	</logger>
+	<logger name="braga">
+		<level value="trace" />
+		<appender_ref ref="braga" />
+	</logger>
+	<logger name="php">
+		<level value="trace" />
+		<appender_ref ref="php" />
+	</logger>
+	<logger name="http">
+		<level value="trace" />
+		<appender_ref ref="http" />
+	</logger>
+	<logger name="cron">
+		<level value="trace" />
+		<appender_ref ref="cron" />
+	</logger>
+</configuration>

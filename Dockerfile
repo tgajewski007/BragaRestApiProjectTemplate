@@ -19,7 +19,5 @@ RUN mkdir log && chown www-data:www-data log
 RUN mkdir tmp && chown www-data:www-data tmp
 RUN php /usr/local/bin/composer update --no-plugins --no-scripts  --no-dev
 COPY public /var/www/html
-COPY cron /var/www/cron
 COPY src /var/www/src
-COPY adhoc /var/www/adhoc 
-RUN ln -s html/ public
+COPY loggerConfig-docker.xml /var/www/config/loggerConfig.xml
