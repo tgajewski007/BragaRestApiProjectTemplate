@@ -12,23 +12,23 @@ class Config
 	// -----------------------------------------------------------------------------------------------------------------
 	private static $iniContent;
 	// -----------------------------------------------------------------------------------------------------------------
+	public static function putenv($key, $val)
+	{
+		self::$iniContent[$key] = $val;
+	}
+	// -----------------------------------------------------------------------------------------------------------------
 	private static function getEnviromentVariable($name)
 	{
-		if(empty(self::$iniContent))
+		if(!isset(self::$iniContent[$name]))
 		{
-			self::$iniContent = array();
+			$var = getenv($name);
+			if($var === false)
+			{
+				throw new \Exception("SG:90501 Nie zdefiniowano zmiennej systemowej: " . $name . " popraw konfiguracje dockera", 90501);
+			}
+			self::$iniContent[$name] = $var;
 		}
-
-		self::$iniContent[$name] = getenv($name);
-
-		if(self::$iniContent[$name] !== false)
-		{
-			return self::$iniContent[$name];
-		}
-		else
-		{
-			throw new \Exception("BR:90001 Nie zdefiniowano zmiennej systemowej: " . $name . " popraw konfiguracje dockera");
-		}
+		return self::$iniContent[$name];
 	}
 	// -----------------------------------------------------------------------------------------------------------------
 	public static function getVersion()
@@ -66,9 +66,19 @@ class Config
 		return self::getEnviromentVariable("ISSUERREALMS");
 	}
 	// -----------------------------------------------------------------------------------------------------------------
-	public static function getLog4PhpConfigFile()
+	public static function getGelfHost()
 	{
-		return self::getEnviromentVariable("LOG4PHPCONFIGFILE");
+		return self::getEnviromentVariable("GELF_HOST");
+	}
+	// -----------------------------------------------------------------------------------------------------------------
+	public static function getGelfPort()
+	{
+		return self::getEnviromentVariable("GELF_PORT");
+	}
+	// -----------------------------------------------------------------------------------------------------------------
+	public static function getLogLevel()
+	{
+		return (int)self::getEnviromentVariable("LOG_LEVEL");
 	}
 	// -----------------------------------------------------------------------------------------------------------------
 }

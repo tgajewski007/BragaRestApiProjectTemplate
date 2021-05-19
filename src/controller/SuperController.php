@@ -1,6 +1,7 @@
 <?php
 namespace braga\project\controllers;
 use braga\tools\api\BaseRestController;
+use braga\tools\tools\RequstUrl;
 
 /**
  * Created on 6 paź 2017 18:05:43
@@ -13,20 +14,22 @@ class SuperController extends BaseRestController
 	// -----------------------------------------------------------------------------------------------------------------
 	public function doAction()
 	{
-		$serviceName = null;
-		if(isset($_REQUEST["modul"]))
+		try
 		{
-			$serviceName = $_REQUEST["modul"];
+			switch(RequstUrl::get(1))
+			{
+				case "api.v1":
+					$d = new \braga\project\controller\api\v1\ApiRestController();
+					$d->doAction();
+					break;
+				default :
+					$this->sendMethodNotAllowed();
+					break;
+			}
 		}
-		switch($serviceName)
+		catch(\Throwable $e)
 		{
-			case "api.v1":
-				$d = new \braga\project\controller\api\v1\ApiRestController();
-				$d->doAction();
-				break;
-			default :
-				$this->sendMethodNotAllowed();
-				break;
+			$this->sendError($e);
 		}
 	}
 	// -----------------------------------------------------------------------------------------------------------------

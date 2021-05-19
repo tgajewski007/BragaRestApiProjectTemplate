@@ -1,7 +1,7 @@
 <?php
 namespace braga\project\controller\api\v1;
 use braga\tools\api\BaseRestController;
-use braga\tools\tools\PostChecker;
+use braga\tools\tools\RequstUrl;
 
 /**
  * error prefix ESB:210
@@ -14,7 +14,7 @@ class PostController extends BaseRestController
 	// -----------------------------------------------------------------------------------------------------------------
 	public function doAction()
 	{
-		switch(PostChecker::get("action"))
+		switch(RequstUrl::get(2))
 		{
 			default :
 				$this->sendMethodNotAllowed();

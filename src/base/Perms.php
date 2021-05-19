@@ -1,10 +1,16 @@
 <?php
 namespace braga\project\base;
-use Lcobucci\JWT\Parser;
-use Lcobucci\JWT\ValidationData;
-use Lcobucci\JWT\Signer\Key;
+use Lcobucci\Clock\SystemClock;
+use Lcobucci\JWT\Encoding\JoseEncoder;
+use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Signer\Rsa\Sha512;
+use Lcobucci\JWT\Token\Parser;
+use Lcobucci\JWT\Token\Plain;
+use Lcobucci\JWT\Validation\Validator;
+use Lcobucci\JWT\Validation\Constraint\IssuedBy;
+use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
+use Lcobucci\JWT\Validation\Constraint\SignedWith;
 use braga\project\config\Config;
 use braga\project\obj\KeyStore;
 
@@ -15,23 +21,23 @@ use braga\project\obj\KeyStore;
  * @package
  *
  */
-class InteriorSsoPerms
+class Perms
 {
 	// -----------------------------------------------------------------------------------------------------------------
-	const KEYCLOAK_CLIENT_NAME = "project";
+	const KEYCLOAK_CLIENT_NAME = "braga";
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
-	 * @var InteriorSsoPerms
+	 * @var self
 	 */
 	private static $instance = null;
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
-	 * @var \Lcobucci\JWT\Token
+	 * @var Plain
 	 */
 	private $jwt;
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
-	 * @return \Lcobucci\JWT\Token
+	 * @return Plain
 	 */
 	public function getJwt()
 	{
@@ -39,7 +45,7 @@ class InteriorSsoPerms
 	}
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
-	 * @param \Lcobucci\JWT\Token $jwt
+	 * @param Plain $jwt
 	 */
 	public function setJwt($jwt)
 	{
@@ -54,6 +60,9 @@ class InteriorSsoPerms
 	{
 	}
 	// -----------------------------------------------------------------------------------------------------------------
+	/**
+	 * @return Perms
+	 */
 	public static function getInstance()
 	{
 		if(empty(self::$instance))
@@ -63,72 +72,72 @@ class InteriorSsoPerms
 		return self::$instance;
 	}
 	// -----------------------------------------------------------------------------------------------------------------
+	/**
+	 * @param string $roleName
+	 */
 	private function check($roleName)
 	{
 		$tokenString = self::getTokenStringFromHttpHeader();
-		$this->jwt = self::getTokenFromString($tokenString);
+		$this->jwt = self::getValidTokenFromString($tokenString);
 		$this->authorize($roleName);
 	}
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
 	 * @param string $jwt
 	 * @throws \Exception
-	 * @return \Lcobucci\JWT\Token
+	 * @return \Lcobucci\JWT\Token\Plain|\Lcobucci\JWT\Token
 	 */
-	public static function getTokenFromString($jwt)
+	public static function getValidTokenFromString($jwt)
 	{
-		$parser = new Parser();
+		$parser = new Parser(new JoseEncoder());
 		$token = $parser->parse($jwt);
-		$timeSkew = time() - $token->getClaim("iat");
-		if($timeSkew > -60 && $timeSkew < 0)
+		if($token instanceof Plain)
 		{
-			$data = new ValidationData($token->getClaim("iat"));
-		}
-		else
-		{
-			$data = new ValidationData();
-		}
-
-		$data->setIssuer(Config::getIssuerRealms());
-		$typ = $token->getClaim("typ");
-		if($typ == "Bearer")
-		{
-			if($token->validate($data))
+			$typ = $token->claims()->get("typ");
+			if($typ == "Bearer")
 			{
-				if($token->getHeader("alg") == "RS256")
+				if($token->headers()->get("alg") == "RS256")
 				{
 					$signer = new Sha256();
 				}
-				elseif($token->getHeader("alg") == "RS512")
+				elseif($token->headers()->get("alg") == "RS512")
 				{
 					$signer = new Sha512();
 				}
 				else
 				{
-					throw new \Exception("BP:90201 Nieobsugiwany algorytm weryfikacji tokenu", 90201);
+					throw new \Exception("GO:90201 Nieobsugiwany algorytm weryfikacji tokenu", 90201);
 				}
-				$key = new Key(KeyStore::get($token->getHeader("kid"))->getPublicKey());
+				$key = InMemory::plainText(KeyStore::get($token->headers()->get("kid"))->getPublicKey());
 
-				if($token->verify($signer, $key))
+				$v = new Validator();
+				$issuedBy = new IssuedBy(Config::getIssuerRealms());
+				$validAt = new LooseValidAt(SystemClock::fromSystemTimezone());
+				$signedWith = new SignedWith($signer, $key);
+				if($v->validate($token, $issuedBy, $validAt, $signedWith))
 				{
 					return $token;
 				}
 				else
 				{
-					throw new \Exception("BP:90202 Błąd veryfikacji tokenu", 90202);
+					throw new \Exception("DE:90202 Błąd veryfikacji tokenu", 90202);
 				}
 			}
 			else
 			{
-				throw new \Exception("BP:90203 Błąd veryfikacji tokenu", 90203);
+				throw new \Exception("DE:90203 Niewłaściwy typ tokenu", 90203);
 			}
 		}
 		else
 		{
-			throw new \Exception("BP:90204 Niewłaściwy typ tokenu", 90204);
+			throw new \Exception("DE:90204 Błąd parsowania tokenu", 90204);
 		}
 	}
 	// -----------------------------------------------------------------------------------------------------------------
+	/**
+	 * @throws \Exception
+	 * @return string
+	 */
 	public static function getTokenStringFromHttpHeader()
 	{
 		$headers = self::getAuthorizationHeader();
@@ -141,9 +150,13 @@ class InteriorSsoPerms
 				return $matches[1];
 			}
 		}
-		throw new \Exception("BP:90205 Brak tokenu w nagłówku", 90205);
+		throw new \Exception("DE:90205 Brak tokenu w nagłówku", 90205);
 	}
 	// -----------------------------------------------------------------------------------------------------------------
+	/**
+	 * @throws \Exception
+	 * @return string
+	 */
 	protected static function getAuthorizationHeader()
 	{
 		if(isset($_SERVER['Authorization']))
@@ -168,31 +181,39 @@ class InteriorSsoPerms
 				}
 			}
 		}
-		throw new \Exception("BP:90206 Brak nagłówka Authorization", 90206);
+		throw new \Exception("DE:90206 Brak nagłówka Authorization", 90206);
 	}
 	// -----------------------------------------------------------------------------------------------------------------
+	/**
+	 * @param string $roleName
+	 * @throws \Exception
+	 */
 	public static function authorize($roleName)
 	{
 		if(!empty($roleName))
 		{
-			$realmAccess = self::getInstance()->jwt->getClaim("resource_access");
+			$realmAccess = self::getInstance()->jwt->claims()->get("resource_access");
 			if(isset($realmAccess->{self::KEYCLOAK_CLIENT_NAME}))
 			{
 				if(array_search($roleName, $realmAccess->{self::KEYCLOAK_CLIENT_NAME}->roles) === false)
 				{
-					throw new \Exception("BP:90207 Błąd autoryzacji", 90207);
+					throw new \Exception("DE:90207 Błąd autoryzacji", 90207);
 				}
 			}
 			else
 			{
-				throw new \Exception("BP:90208 Błąd autoryzacji", 90208);
+				throw new \Exception("DE:90208 Błąd autoryzacji", 90208);
 			}
 		}
 	}
 	// -----------------------------------------------------------------------------------------------------------------
-	public static function pageOpen($roleName)
+	/**
+	 * @param string $roleName
+	 * @throws \Exception
+	 */
+	public static function pageOpen($roleName = null)
 	{
-		InteriorSsoPerms::getInstance()->check($roleName);
+		Perms::getInstance()->check($roleName);
 	}
 	// -----------------------------------------------------------------------------------------------------------------
 }

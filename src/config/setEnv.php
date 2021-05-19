@@ -7,6 +7,13 @@
  * @package
  *
  */
+use braga\graylogger\Factory;
+use braga\graylogger\GrayLoggerConfig;
+use braga\project\base\Perms;
+use braga\project\base\PermsConfig;
+use braga\project\config\Config;
+use braga\project\utils\logger\PHPLogger;
+
 mb_internal_encoding("utf8");
 ini_set("max_execution_time", "1800");
 date_default_timezone_set("Europe/Warsaw");
@@ -27,6 +34,13 @@ define("PHP_DATE_FORMAT", "Y-m-d");
 define("PHP_TIME_FORMAT", "H:i:s");
 define("PHP_DATETIME_FORMAT", PHP_DATE_FORMAT . " " . PHP_TIME_FORMAT);
 
-Logger::configure(\braga\project\config\Config::getLog4PhpConfigFile());
-set_error_handler("\\braga\\project\\utils\\ErrorHandler::errorHandler");
-set_exception_handler("\\braga\\project\\utils\\ErrorHandler::exceptionHandler");
+Perms::getInstance()->setConfig(new PermsConfig("cobrador-web", Config::getInteriorIssuerRealms()));
+
+Factory::setStartupConfig(new GrayLoggerConfig("SG", Config::getGelfHost(), Config::getGelfPort(), Config::getLogLevel(), Config::getLogFile()));
+
+set_error_handler([
+				PHPLogger::class,
+				"handleError" ]);
+set_exception_handler([
+				PHPLogger::class,
+				"handleException" ]);

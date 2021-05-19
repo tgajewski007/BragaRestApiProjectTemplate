@@ -1,51 +1,55 @@
 version: '2'
 services:    
-    db:
-        container_name: change-me-mysql
-        image: mysql:5.7
-        restart: always
-        volumes:
-          - change-me-db-data:/var/lib/mysql
-          - change-me-db-config:/etc/mysql
-        environment:
-            MYSQL_ROOT_PASSWORD: change-me
-            MYSQL_DATABASE: change-me
-            MYSQL_USER: change-me
-            MYSQL_PASSWORD: change-me       
-            TZ: Europe/Warsaw
-        ports:
-          - 3306:3306
-        networks:
-          - change-me-network
-        #mem_limit: 2G
-        #memswap_limit: 0
-        #mem_reservation: 1G
-    php:
-        build: .
-        container_name: change-me-php
-        environment:
-            DBCONNECTIONSTRING: mysql:host=db
-            DBSCHEMA: change-me
-            DBUSER: change-me
-            DBPASS: change-me
-            LOG4PHPCONFIGFILE: /var/www/config/loggerConfig.xml  
-            ISSUERREALMS: https://auth.rubycon.info/auth/realms/interior
-            VERSION: 1.0.0    
-            TZ: Europe/Warsaw
-        ports:
-          - '80:80'
-        restart: always
-        volumes:
-          - change-me-app-log:/var/www/log
-          - change-me-app-config:/var/www/config
-        networks:
-          - change-me-network
-        depends_on:
-          - db
+  db:
+    container_name: sendgridproxy-mysql
+    image: mysql:5.7
+    restart: always
+    volumes:
+      - sendgridproxy-db-data:/var/lib/mysql
+      - sendgridproxy-db-config:/etc/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: sendgridproxy
+      MYSQL_DATABASE: sendgridproxy
+      MYSQL_USER: sendgridproxy
+      MYSQL_PASSWORD: sendgridproxy       
+      TZ: Europe/Warsaw
+    ports:
+      - 3306:3306
+    networks:
+      - sendgridproxy-network
+    #mem_limit: 2G
+    #memswap_limit: 0
+    #mem_reservation: 1G
+  php:
+    build: .
+    container_name: sendgridproxy-php
+    hostname: sendgridproxy-test
+    environment:
+      DBCONNECTIONSTRING: mysql:host=db
+      DBSCHEMA: sendgridproxy
+      DBUSER: sendgridproxy
+      DBPASS: sendgridproxy
+      LOG4PHPCONFIGFILE: /var/www/config/loggerConfig.xml  
+      ISSUERREALMS: https://auth.rubycon.info/auth/realms/interior
+      VERSION: 1.0.0    
+      TZ: Europe/Warsaw
+      GELF_HOST: graylog.rubycon.info
+      GELF_PORT: 12201
+      LOG_LEVEL: 100
+    ports:
+      - '80:80'
+    restart: always
+    volumes:
+      - sendgridproxy-app-log:/var/www/log
+      - sendgridproxy-app-config:/var/www/config
+    networks:
+      - sendgridproxy-network
+    depends_on:
+      - db
 networks:
-    change-me-network:
+    sendgridproxy-network:
 volumes: 
-    change-me-app-log:  
-    change-me-app-config:   
-    change-me-db-data:
-    change-me-db-config: 
+    sendgridproxy-app-log:  
+    sendgridproxy-app-config:   
+    sendgridproxy-db-data:
+    sendgridproxy-db-config: 

@@ -1,19 +1,25 @@
 <?php
-namespace braga\project\utils;
-
-/**
- * Created on 17.09.2016 17:49:02
- * error prefix
- * @author Tomasz Gajewski
- * @package
- *
- */
-class ErrorHandler
+namespace braga\project\utils\logger;
+use braga\graylogger\BaseLogger;
+use Exception;
+use Throwable;
+use braga\graylogger\Factory;
+use Monolog\Logger;
+class PHPLogger extends BaseLogger
 {
-	// -------------------------------------------------------------------------
-	public static function errorHandler($errno, $errstr, $errfile, $errline)
+	const NAME = "php";
+
+	/**
+	 * @param $errno
+	 * @param $errstr
+	 * @param $errfile
+	 * @param $errline
+	 * @return bool
+	 * @throws Exception
+	 */
+	public static function handleError($errno, $errstr, $errfile, $errline)
 	{
-		$l = \Logger::getLogger("php");
+		$l = Factory::getInstance(self::NAME);
 		$msg = $errno . " " . $errstr . " file: " . $errfile . " line: " . $errline;
 		switch($errno)
 		{
@@ -26,6 +32,7 @@ class ErrorHandler
 			case E_RECOVERABLE_ERROR:
 			case E_ALL:
 				$l->error($msg);
+				throw new Exception($errstr, $errno);
 				break;
 			case E_CORE_WARNING:
 			case E_COMPILE_WARNING:
@@ -33,7 +40,7 @@ class ErrorHandler
 			case E_USER_WARNING:
 			case E_DEPRECATED:
 			case E_USER_DEPRECATED:
-				$l->warn($msg);
+				$l->warning($msg);
 				break;
 			case E_NOTICE:
 			case E_USER_NOTICE:
@@ -42,17 +49,16 @@ class ErrorHandler
 		}
 		return false;
 	}
-	// -------------------------------------------------------------------------
-	public static function exceptionHandler(\Throwable $exception)
+	public static function handleException(Throwable $exception)
 	{
 		$msg = $exception->getCode() . " ";
 		$msg .= $exception->getMessage() . " ";
 		$msg .= $exception->getFile() . " ";
 		$msg .= $exception->getLine();
 
-		\Logger::getLogger("php")->error($msg);
+		$l = Factory::getInstance(self::NAME);
+		$l->error($msg);
+		$l->exception($exception, Logger::CRITICAL);
 		return false;
 	}
-	// -------------------------------------------------------------------------
 }
-?>

@@ -1,7 +1,7 @@
 <?php
 namespace braga\project\controller\api\v1;
 use braga\tools\api\BaseRestController;
-use braga\tools\tools\PostChecker;
+use braga\tools\tools\RequstUrl;
 
 /**
  * Created on 6 sie 2018 09:44:03
@@ -15,7 +15,7 @@ class PutContoller extends BaseRestController
 	// -----------------------------------------------------------------------------------------------------------------
 	public function doAction()
 	{
-		switch(PostChecker::get("action"))
+		switch(RequstUrl::get(2))
 		{
 			default :
 				$this->sendMethodNotAllowed();
