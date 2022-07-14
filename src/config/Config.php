@@ -81,4 +81,14 @@ class Config
 		return (int)self::getEnviromentVariable("LOG_LEVEL");
 	}
 	// -----------------------------------------------------------------------------------------------------------------
+	public static function getClientId()
+	{
+		return self::getEnviromentVariable("AUTH_CLIENT_ID");
+	}
+	// -----------------------------------------------------------------------------------------------------------------
+	public static function getClientSecret()
+	{
+		return self::getEnviromentVariable("AUTH_CLIENT_SECRET");
+	}
+	// -----------------------------------------------------------------------------------------------------------------
 }

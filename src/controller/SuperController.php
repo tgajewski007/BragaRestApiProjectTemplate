@@ -1,7 +1,9 @@
 <?php
-namespace braga\project\controllers;
-use braga\tools\api\BaseRestController;
-use braga\tools\tools\RequstUrl;
+namespace braga\project\controller;
+use braga\project\controller\api\v1\ApiRestController;
+use braga\project\utils\logger\APILogger;
+use braga\tools\api\ApiFiltr;
+use braga\tools\api\RestController;
 
 /**
  * Created on 6 paź 2017 18:05:43
@@ -9,23 +11,23 @@ use braga\tools\tools\RequstUrl;
  * package controllers
  * error prefix CB:291
  */
-class SuperController extends BaseRestController
+class SuperController extends RestController
 {
+	// -----------------------------------------------------------------------------------------------------------------
+	function __construct()
+	{
+		$this->setLoggerClassNama(APILogger::class);
+		$this->addApiFiltr(new ApiFiltr(ApiFiltr::ANY, "/api.v1(.*)", function ()
+		{
+			(new ApiRestController("/api.v1"))->doAction();
+		}));
+	}
 	// -----------------------------------------------------------------------------------------------------------------
 	public function doAction()
 	{
 		try
 		{
-			switch(RequstUrl::get(1))
-			{
-				case "api.v1":
-					$d = new \braga\project\controller\api\v1\ApiRestController();
-					$d->doAction();
-					break;
-				default :
-					$this->sendMethodNotAllowed();
-					break;
-			}
+			parent::doAction();
 		}
 		catch(\Throwable $e)
 		{

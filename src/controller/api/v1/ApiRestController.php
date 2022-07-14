@@ -1,6 +1,7 @@
 <?php
 namespace braga\project\controller\api\v1;
-use braga\tools\api\BaseRestController;
+use braga\project\utils\logger\APILogger;
+use braga\tools\api\RestController;
 
 /**
  * Created on 26 lut 2018 15:10:53
@@ -9,42 +10,13 @@ use braga\tools\api\BaseRestController;
  * @package
  *
  */
-class ApiRestController extends BaseRestController
+class ApiRestController extends RestController
 {
 	// -----------------------------------------------------------------------------------------------------------------
-	public function doAction()
+	public function __construct($urlPrefix)
 	{
-		switch($_SERVER["REQUEST_METHOD"])
-		{
-			case "OPTIONS":
-				$this->sendCheck();
-				break;
-			case "GET":
-				$d = new GetController();
-				$d->doAction();
-				break;
-			case "POST":
-				$d = new PostController();
-				$d->doAction();
-				break;
-			case "PUT":
-				$d = new PutContoller();
-				$d->doAction();
-				break;
-			case "DELETE":
-				$d = new DeleteController();
-				$d->doAction();
-				break;
-			case "PATCH":
-				$d = new PatchController();
-				$d->doAction();
-				break;
-		}
-	}
-	// -----------------------------------------------------------------------------------------------------------------
-	protected function sendCheck()
-	{
-		$this->sendStandardsHeaders();
+		$this->setLoggerClassNama(APILogger::class);
+		$this->setUrlPrefix($urlPrefix);
 	}
 	// -----------------------------------------------------------------------------------------------------------------
 }

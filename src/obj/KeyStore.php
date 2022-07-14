@@ -74,5 +74,17 @@ class KeyStore extends KeyStoreDAO implements BusinesObject
 		return new Collection($db, self::get());
 	}
 	// -----------------------------------------------------------------------------------------------------------------
+	/**
+	 * @return \braga\project\obj\KeyStore
+	 */
+	public static function createFromJwt($publicKey, $kid)
+	{
+		$k = self::get();
+		$k->setIdKeyStore($kid);
+		$k->setPublicKey($publicKey);
+		$k->save();
+		return $k;
+	}
+	// -----------------------------------------------------------------------------------------------------------------
 }
 ?>

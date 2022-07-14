@@ -1,5 +1,5 @@
 <?php
-use braga\project\controllers\SuperController;
+use braga\project\controller\SuperController;
 
 require '../vendor/autoload.php';
 $d = new SuperController();
