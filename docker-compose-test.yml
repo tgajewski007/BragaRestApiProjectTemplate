@@ -36,6 +36,7 @@ services:
       GELF_HOST: graylog.rubycon.info
       GELF_PORT: 12201
       LOG_LEVEL: 100
+      LOG_FILE: ""
       AUTH_CLIENT_ID: "project"
       AUTH_CLIENT_SECRET: ""
     ports:
