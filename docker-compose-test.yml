@@ -3,28 +3,36 @@ services:
   db:
     container_name: template-project-mysql
     image: mysql:8.0
-    restart: always
+    restart: always    
+    env_file: 
+      - .env-test
     volumes:
       - template-project-db-data:/var/lib/mysql
       - template-project-db-config:/etc/mysql
       - template-project-db-mysql-config:/var/lib/mysql-files
     environment:
-      MYSQL_ROOT_PASSWORD: template-project
-      MYSQL_DATABASE: template-project
-      MYSQL_USER: template-project
-      MYSQL_PASSWORD: template-project       
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASS
+      MYSQL_DATABASE: transference
+      MYSQL_USER: $MYSQL_USER
+      MYSQL_PASSWORD: $MYSQL_PASS     
       TZ: Europe/Warsaw
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
     ports:
       - 3306:3306
     networks:
       - template-project-network
-    #mem_limit: 2G
-    #memswap_limit: 0
-    #mem_reservation: 1G
+    mem_limit: 2G
+    memswap_limit: 0
+    mem_reservation: 1G
   php:
     build: .
     container_name: template-project-php
     hostname: template-project-test
+    env_file: 
+      - .env-test
     environment:
       DBCONNECTIONSTRING: mysql:host=db
       DBSCHEMA: template-project
@@ -38,7 +46,7 @@ services:
       LOG_LEVEL: 100
       LOG_FILE: ""
       AUTH_CLIENT_ID: "project"
-      AUTH_CLIENT_SECRET: ""
+      AUTH_CLIENT_SECRET: $AUTH_SECRET
     ports:
       - '80:80'
     restart: always
