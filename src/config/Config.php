@@ -24,7 +24,7 @@ class Config
 			$var = getenv($name);
 			if($var === false)
 			{
-				throw new \Exception("SG:90501 Nie zdefiniowano zmiennej systemowej: " . $name . " popraw konfiguracje dockera", 90501);
+				throw new \Exception("CHANGE_ME:90501 Nie zdefiniowano zmiennej systemowej: " . $name . " popraw konfiguracje dockera", 90501);
 			}
 			self::$iniContent[$name] = $var;
 		}
