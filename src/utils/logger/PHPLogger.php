@@ -7,8 +7,9 @@ use braga\graylogger\Factory;
 use Monolog\Logger;
 class PHPLogger extends BaseLogger
 {
+	// -----------------------------------------------------------------------------------------------------------------
 	const NAME = "php";
-
+	// -----------------------------------------------------------------------------------------------------------------
 	/**
 	 * @param $errno
 	 * @param $errstr
@@ -56,16 +57,11 @@ class PHPLogger extends BaseLogger
 		}
 		return false;
 	}
+	// -----------------------------------------------------------------------------------------------------------------
 	public static function handleException(Throwable $exception)
 	{
-		$msg = $exception->getCode() . " ";
-		$msg .= $exception->getMessage() . " ";
-		$msg .= $exception->getFile() . " ";
-		$msg .= $exception->getLine();
-
-		$l = Factory::getInstance(self::NAME);
-		$l->error($msg);
-		$l->exception($exception, Logger::CRITICAL);
+		Factory::getInstance(self::NAME)->exception($exception, Logger::CRITICAL);
 		return false;
 	}
+	// -----------------------------------------------------------------------------------------------------------------
 }
