@@ -38,7 +38,7 @@ services:
       DBSCHEMA: template-project
       DBUSER: template-project
       DBPASS: template-project
-      ISSUERREALMS: https://auth.piechocki.info/auth/realms/interior
+      ISSUERREALMS: https://auth.piechocki.company/auth/realms/interior
       VERSION: 1.0.0    
       TZ: Europe/Warsaw
       GELF_HOST: graylog.piechocki.company
