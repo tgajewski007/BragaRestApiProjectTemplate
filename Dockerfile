@@ -1,5 +1,5 @@
 FROM php:7.4-apache
-RUN apt-get update && apt-get install -y libfreetype6-dev libxml2-dev libmcrypt-dev libc-client-dev git libzip-dev msmtp nano zip unzip qpdf
+RUN apt-get update && apt-get install -y libfreetype6-dev libxml2-dev libmcrypt-dev libc-client-dev git libzip-dev msmtp nano zip unzip curl
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 ENV TZ=Europe/Warsaw
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
