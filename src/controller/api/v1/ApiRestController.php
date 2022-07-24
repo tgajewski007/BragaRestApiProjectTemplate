@@ -1,6 +1,7 @@
 <?php
 namespace braga\project\controller\api\v1;
 use braga\project\utils\logger\APILogger;
+use braga\tools\api\ApiFiltr;
 use braga\tools\api\RestController;
 
 /**
@@ -17,6 +18,11 @@ class ApiRestController extends RestController
 	{
 		$this->setLoggerClassNama(APILogger::class);
 		$this->setUrlPrefix($urlPrefix);
+		// =============================================================================
+		$this->addApiFiltr(new ApiFiltr(ApiFiltr::GET, "/health", function ($param)
+		{
+			(new HealthCheckController())->health();
+		}));
 	}
 	// -----------------------------------------------------------------------------------------------------------------
 }

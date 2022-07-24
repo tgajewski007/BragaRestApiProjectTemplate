@@ -3,4 +3,4 @@ composer.phar
 /composer.lock
 /loggerConfig.xml
 /src/config/devEnv.php
-/.env*
+/*.env
