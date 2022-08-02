@@ -61,4 +61,4 @@ networks:
 volumes: 
   template-project-db-data:
   template-project-db-config: 
-  template-project-mysql-config: 
+  template-project-db-mysql-config: 
