@@ -1,6 +1,4 @@
 composer.phar
 /vendor/
-/composer.lock
-/loggerConfig.xml
 /src/config/devEnv.php
 /*.env

@@ -18,8 +18,6 @@ class Perms extends Security
 	// -----------------------------------------------------------------------------------------------------------------
 	public function check(?array ...$roleName)
 	{
-		MainLogger::debug("Perms.check", [
-						"iss" => $this->config->getIssuedBy() ]);
 		$u = parent::check(...$roleName);
 		Factory::setUserNameContext($u->getLogin(), $u->getIdUser(), self::getJwt()->claims()->get("session_state"));
 		return $u;

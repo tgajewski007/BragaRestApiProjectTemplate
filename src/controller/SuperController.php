@@ -9,7 +9,7 @@ use braga\tools\api\RestController;
  * Created on 6 paź 2017 18:05:43
  * @author Tomasz Gajewski
  * package controllers
- * error prefix CB:291
+ * error prefix BR:851
  */
 class SuperController extends RestController
 {

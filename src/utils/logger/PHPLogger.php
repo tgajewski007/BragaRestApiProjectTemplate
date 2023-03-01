@@ -2,6 +2,7 @@
 namespace braga\project\utils\logger;
 use braga\graylogger\BaseLogger;
 use Exception;
+use Monolog\Level;
 use Throwable;
 use braga\graylogger\Factory;
 use Monolog\Logger;
@@ -36,9 +37,8 @@ class PHPLogger extends BaseLogger
 				case E_RECOVERABLE_ERROR:
 				case E_ALL:
 					$l->error($msg, [
-									"stack" => $stack ]);
+						"stack" => $stack]);
 					throw new Exception($errstr, $errno);
-					break;
 				case E_CORE_WARNING:
 				case E_COMPILE_WARNING:
 				case E_WARNING:
@@ -46,12 +46,12 @@ class PHPLogger extends BaseLogger
 				case E_DEPRECATED:
 				case E_USER_DEPRECATED:
 					$l->warning($msg, [
-									"stack" => $stack ]);
+						"stack" => $stack]);
 					break;
 				case E_NOTICE:
 				case E_USER_NOTICE:
 					$l->info($msg, [
-									"stack" => $stack ]);
+						"stack" => $stack]);
 					break;
 			}
 		}
@@ -60,7 +60,7 @@ class PHPLogger extends BaseLogger
 	// -----------------------------------------------------------------------------------------------------------------
 	public static function handleException(Throwable $exception)
 	{
-		Factory::getInstance(self::NAME)->exception($exception, Logger::CRITICAL);
+		Factory::getInstance(self::NAME)->exception($exception, Level::Emergency);
 		return false;
 	}
 	// -----------------------------------------------------------------------------------------------------------------

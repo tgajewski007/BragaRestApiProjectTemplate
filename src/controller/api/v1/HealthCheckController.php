@@ -12,7 +12,7 @@ class HealthCheckController extends RestController
 		{
 			$this->testDbConnection();
 			// TODO: make next healthtest check - throw excpetion on fail
-			$this->send("LIVE");
+			$this->sendPlainText("LIVE");
 		}
 		catch(\Throwable $e)
 		{
