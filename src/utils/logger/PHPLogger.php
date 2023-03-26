@@ -1,6 +1,7 @@
 <?php
 namespace braga\project\utils\logger;
 use braga\graylogger\BaseLogger;
+use braga\tools\tools\JsonSerializer;
 use Exception;
 use Monolog\Level;
 use Throwable;
@@ -8,7 +9,6 @@ use braga\graylogger\Factory;
 use Monolog\Logger;
 class PHPLogger extends BaseLogger
 {
-	// -----------------------------------------------------------------------------------------------------------------
 	const NAME = "php";
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
@@ -24,7 +24,7 @@ class PHPLogger extends BaseLogger
 		if((error_reporting() & $errno))
 		{
 			$l = Factory::getInstance(self::NAME);
-			$stack = json_encode(debug_backtrace(), JSON_PRETTY_PRINT);
+			$stack = JsonSerializer::toJson(debug_backtrace());
 			$msg = $errno . " " . $errstr . " file: " . $errfile . " line: " . $errline;
 			switch($errno)
 			{

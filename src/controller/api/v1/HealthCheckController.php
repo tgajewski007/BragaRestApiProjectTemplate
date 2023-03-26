@@ -27,9 +27,9 @@ class HealthCheckController extends RestController
 		$db->query($sql);
 		if($db->nextRecord())
 		{
-			$dbDate = $db->f(0);
-			$phpDate = date(PHP_DATETIME_FORMAT);
-			if($dbDate != $phpDate)
+			$dbDate = strtotime($db->f(0));
+			$phpDate = time();
+			if(abs($dbDate - $phpDate) > 1)
 			{
 				throw new \Exception("Diffrent date", 2);
 			}
