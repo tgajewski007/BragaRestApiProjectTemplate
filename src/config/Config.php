@@ -78,12 +78,12 @@ class Config
 	// -----------------------------------------------------------------------------------------------------------------
 	public static function getLogLevel()
 	{
-		return (int)self::getEnviromentVariable("LOG_LEVEL");
+		return self::getEnviromentVariable("LOG_LEVEL");
 	}
 	// -----------------------------------------------------------------------------------------------------------------
 	public static function getLogFile()
 	{
-		return (int)self::getEnviromentVariable("LOG_FILE");
+		return self::getEnviromentVariable("LOG_FILE");
 	}
 	// -----------------------------------------------------------------------------------------------------------------
 	public static function getClientId()
