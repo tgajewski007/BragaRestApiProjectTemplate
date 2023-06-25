@@ -1,8 +1,8 @@
 <?php
-namespace braga\project\obj;
+namespace braga\requpero\obj;
 use braga\db\BusinesObject;
 use braga\db\Collection;
-use braga\project\dao\KeyStoreDAO;
+use braga\requpero\dao\KeyStoreDAO;
 use braga\db\mysql\DB;
 /**
  * Created on 08-08-2018 16:31:43
@@ -62,7 +62,7 @@ class KeyStore extends KeyStoreDAO implements BusinesObject
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
 	 * This method returns a collection of objects
-	 * @return \braga\db\Collection|\braga\project\obj\KeyStore[]
+	 * @return \braga\db\Collection|\braga\requpero\obj\KeyStore[]
 	 */
 	public static function getAll()
 	{
@@ -75,7 +75,7 @@ class KeyStore extends KeyStoreDAO implements BusinesObject
 	}
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
-	 * @return \braga\project\obj\KeyStore
+	 * @return \braga\requpero\obj\KeyStore
 	 */
 	public static function createFromJwt($publicKey, $kid)
 	{

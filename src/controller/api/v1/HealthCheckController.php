@@ -1,5 +1,5 @@
 <?php
-namespace braga\project\controller\api\v1;
+namespace braga\requpero\controller\api\v1;
 use braga\db\mysql\DB;
 use braga\tools\api\RestController;
 use braga\tools\exception\NoRecordFoundException;

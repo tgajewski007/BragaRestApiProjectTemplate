@@ -1,7 +1,7 @@
 <?php
-namespace braga\project\controller;
-use braga\project\controller\api\v1\ApiRestController;
-use braga\project\utils\logger\APILogger;
+namespace braga\requpero\controller;
+use braga\requpero\controller\api\v1\ApiRestController;
+use braga\requpero\utils\logger\APILogger;
 use braga\tools\api\ApiFiltr;
 use braga\tools\api\RestController;
 

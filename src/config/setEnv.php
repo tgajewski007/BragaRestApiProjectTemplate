@@ -1,5 +1,5 @@
 <?php
-namespace braga\project\config;
+namespace braga\requpero\config;
 /**
  * Created on 22 sty 2018 10:39:20
  * error prefix
@@ -11,10 +11,10 @@ use braga\db\ConnectionConfiguration;
 use braga\db\mysql\DB;
 use braga\graylogger\Factory;
 use braga\graylogger\GrayLoggerConfig;
-use braga\project\base\Perms;
-use braga\project\base\PermsConfig;
-use braga\project\utils\logger\BenchmarkLogger;
-use braga\project\utils\logger\PHPLogger;
+use braga\requpero\base\Perms;
+use braga\requpero\base\PermsConfig;
+use braga\requpero\utils\logger\BenchmarkLogger;
+use braga\requpero\utils\logger\PHPLogger;
 use braga\tools\benchmark\Benchmark;
 use Monolog\Level;
 Benchmark::init(BenchmarkLogger::class);
@@ -37,7 +37,7 @@ define("PHP_DATETIME_FORMAT", PHP_DATE_FORMAT . " " . PHP_TIME_FORMAT);
 
 Perms::getInstance()->setConfig(new PermsConfig(Config::getClientId(), Config::getIssuerRealms()));
 DB::setConnectionConfigration(new ConnectionConfiguration(Config::getDbConnectionString(), Config::getDbUser(), Config::getDbPassword(), "SET NAMES 'utf8mb4' COLLATE 'utf8mb4_polish_ci'"));
-Factory::setStartupConfig(new GrayLoggerConfig("XX", Config::getGelfHost(), Config::getGelfPort(), Level::fromName(Config::getLogLevel()), Config::getLogFile()));
+Factory::setStartupConfig(new GrayLoggerConfig("RQ", Config::getGelfHost(), Config::getGelfPort(), Level::fromName(Config::getLogLevel()), Config::getLogFile()));
 
 set_error_handler([
 				PHPLogger::class,

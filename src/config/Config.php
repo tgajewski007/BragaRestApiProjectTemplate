@@ -1,5 +1,5 @@
 <?php
-namespace braga\project\config;
+namespace braga\requpero\config;
 /**
  * Created on 22 sty 2018 09:56:10
  * error prefix

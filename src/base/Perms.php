@@ -1,7 +1,7 @@
 <?php
-namespace braga\project\base;
+namespace braga\requpero\base;
 use braga\graylogger\Factory;
-use braga\project\utils\logger\MainLogger;
+use braga\requpero\utils\logger\MainLogger;
 use braga\tools\security\OAuth2Token;
 use braga\tools\security\Security;
 

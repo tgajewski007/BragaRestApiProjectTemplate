@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/BragaRestApiProjectTemplate.iml" filepath="$PROJECT_DIR$/.idea/BragaRestApiProjectTemplate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Requpero.iml" filepath="$PROJECT_DIR$/.idea/Requpero.iml" />
     </modules>
   </component>
 </project>

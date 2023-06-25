@@ -1,15 +1,15 @@
 version: '3'
 services:
   db:
-    container_name: template-project-mysql
+    container_name: requpero-mysql
     image: mysql:8.0
     restart: always
     volumes:
-      - template-project-db-data:/var/lib/mysql
-      - template-project-db-config:/etc/mysql
-      - template-project-db-mysql-config:/var/lib/mysql-files
+      - requpero-db-data:/var/lib/mysql
+      - requpero-db-config:/etc/mysql
+      - requpero-db-mysql-config:/var/lib/mysql-files
     environment:
-      MYSQL_DATABASE: template-project
+      MYSQL_DATABASE: requpero
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -22,14 +22,14 @@ services:
     ports:
       - 3306:3306
     networks:
-      - template-project-network
+      - requpero-network
   php:
     build: .
-    container_name: template-project-php
-    hostname: template-project-test
+    container_name: requpero-php
+    hostname: requpero-test
     environment:
       DBCONNECTIONSTRING: mysql:host=db
-      DBSCHEMA: template-project
+      DBSCHEMA: requpero
       DBUSER: ${MYSQL_USER}
       DBPASS: ${MYSQL_PASSWORD}
       ISSUERREALMS: https://auth.rubycon.info/auth/realms/interior
@@ -39,7 +39,7 @@ services:
       GELF_PORT: 12201
       LOG_LEVEL: DEBUG
       LOG_FILE: ""
-      AUTH_CLIENT_ID: "project"
+      AUTH_CLIENT_ID: "requpero"
       AUTH_CLIENT_SECRET: ${AUTH_CLIENT_SECRET}
     healthcheck:
       test: [ "CMD", "curl","-f","http://localhost/api.v1/health" ]
@@ -50,12 +50,12 @@ services:
       - '80:80'
     restart: always
     networks:
-      - template-project-network
+      - requpero-network
     depends_on:
       - db
 networks:
-  template-project-network:
+  requpero-network:
 volumes:
-  template-project-db-data:
-  template-project-db-config:
-  template-project-db-mysql-config: 
+  requpero-db-data:
+  requpero-db-config:
+  requpero-db-mysql-config:

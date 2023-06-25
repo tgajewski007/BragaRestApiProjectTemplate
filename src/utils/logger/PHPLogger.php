@@ -1,5 +1,5 @@
 <?php
-namespace braga\project\utils\logger;
+namespace braga\requpero\utils\logger;
 use braga\graylogger\BaseLogger;
 use braga\tools\tools\JsonSerializer;
 use Exception;

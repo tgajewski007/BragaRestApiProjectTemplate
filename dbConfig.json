@@ -5,9 +5,9 @@
     "connection-string": "",
     "author": "Tomasz Gajewski",
     "output-folder": "src",
-    "dao.xml-folder": "../Doc",
-    "error-prefix": "BP:",
+    "dao.xml-folder": "../RequperoDoc",
+    "error-prefix": "RQ:",
     "db-driver": "mysql",
-    "project-name": "BragaProject",
-    "namespace": "braga\\project\\"
+    "project-name": "Requpero",
+    "namespace": "braga\\requpero\\"
 }

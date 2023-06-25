@@ -1,8 +1,8 @@
 <?php
-namespace braga\project\base;
+namespace braga\requpero\base;
 use braga\db\exception\ExecutionSqlException;
-use braga\project\config\Config;
-use braga\project\obj\KeyStore;
+use braga\requpero\config\Config;
+use braga\requpero\obj\KeyStore;
 use braga\tools\security\OAuth2PublicKey;
 use braga\tools\security\SecurityConfig;
 class PermsConfig extends SecurityConfig

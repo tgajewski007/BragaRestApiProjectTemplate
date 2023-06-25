@@ -1,5 +1,5 @@
 <?php
-namespace braga\project\dao;
+namespace braga\requpero\dao;
 use braga\db\DAO;
 use braga\db\DataSource;
 use braga\db\mysql\DB;
@@ -39,7 +39,7 @@ class KeyStoreDAO implements DAO
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
 	 * @param int $idKeyStore
-	 * @return \braga\project\obj\KeyStore
+	 * @return \braga\requpero\obj\KeyStore
 	 */
 	static function get($idKeyStore = null)
 	{
@@ -63,7 +63,7 @@ class KeyStoreDAO implements DAO
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
 	 * @param int $idKeyStore
-	 * @return \braga\project\obj\KeyStore
+	 * @return \braga\requpero\obj\KeyStore
 	 */
 	static function getForUpdate($idKeyStore = null)
 	{
@@ -114,7 +114,7 @@ class KeyStoreDAO implements DAO
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
 	 * @param DataSource $db
-	 * @return \braga\project\obj\KeyStore
+	 * @return \braga\requpero\obj\KeyStore
 	 */
 	static function getByDataSource(DataSource $db)
 	{
