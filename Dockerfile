@@ -7,7 +7,6 @@ COPY php.ini /usr/local/etc/php/
 RUN a2enmod rewrite
 RUN sed -i -e 's~^ServerSignature On$~ServerSignature Off~g' -e 's~^ServerTokens OS$~ServerTokens Prod~g' /etc/apache2/apache2.conf && echo "ServerSignature Off" >> /etc/apache2/apache2.conf && echo "ServerTokens Prod" >> /etc/apache2/apache2.conf
 RUN docker-php-ext-install pdo_mysql pdo mysqli zip gd calendar
-USER www-data
 WORKDIR /var/www
 RUN mkdir tmp && chown www-data:www-data tmp
 COPY public /var/www/html
@@ -16,3 +15,4 @@ COPY composer.json /var/www
 COPY composer.lock /var/www
 RUN php /usr/local/bin/composer install --no-plugins --no-scripts  --no-dev
 COPY src /var/www/src
+USER www-data
