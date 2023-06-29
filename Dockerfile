@@ -8,7 +8,7 @@ RUN a2enmod rewrite
 RUN sed -i -e 's~^ServerSignature On$~ServerSignature Off~g' -e 's~^ServerTokens OS$~ServerTokens Prod~g' /etc/apache2/apache2.conf && echo "ServerSignature Off" >> /etc/apache2/apache2.conf && echo "ServerTokens Prod" >> /etc/apache2/apache2.conf
 RUN docker-php-ext-install pdo_mysql pdo mysqli zip gd calendar
 WORKDIR /var/www
-RUN mkdir tmp log && chown www-data:www-data tmp log
+RUN mkdir tmp && chown www-data:www-data tmp
 COPY public /var/www/html
 COPY cron /var/www/cron
 COPY composer.json /var/www

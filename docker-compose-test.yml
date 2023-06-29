@@ -39,7 +39,7 @@ services:
       GELF_PORT: 12201
       LOG_LEVEL: DEBUG
       LOG_FILE: ""
-      AUTH_CLIENT_ID: "requpero"
+      AUTH_CLIENT_ID: "project"
       AUTH_CLIENT_SECRET: ${AUTH_CLIENT_SECRET}
     healthcheck:
       test: [ "CMD", "curl","-f","http://localhost/api.v1/health" ]
