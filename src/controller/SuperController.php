@@ -14,11 +14,10 @@ use braga\tools\api\RestController;
 class SuperController extends RestController
 {
 	// -----------------------------------------------------------------------------------------------------------------
-	function __construct()
+	public function __construct()
 	{
 		$this->setLoggerClassNama(APILogger::class);
-		$this->addApiFiltr(new ApiFiltr(ApiFiltr::ANY, "/api.v1(.*)", function ()
-		{
+		$this->addApiFiltr(new ApiFiltr(ApiFiltr::ANY, "/api.v1(.*)", function () {
 			(new ApiRestController("/api.v1"))->doAction();
 		}));
 	}
