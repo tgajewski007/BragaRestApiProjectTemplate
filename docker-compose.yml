@@ -20,7 +20,7 @@ services:
       retries: 10
       interval: 60s
     ports:
-      - 3306:3306
+      - 8062:3306
     networks:
       - template-project-network
   php:
@@ -39,7 +39,7 @@ services:
       GELF_PORT: 12201
       LOG_LEVEL: DEBUG
       LOG_FILE: ""
-      AUTH_CLIENT_ID: "project"
+      AUTH_CLIENT_ID: "requpero"
       AUTH_CLIENT_SECRET: ${AUTH_CLIENT_SECRET}
     healthcheck:
       test: [ "CMD", "curl","-f","http://localhost/api.v1/health" ]
@@ -47,7 +47,7 @@ services:
       retries: 3
       interval: 60s
     ports:
-      - '80:80'
+      - '8061:80'
     restart: always
     networks:
       - template-project-network
