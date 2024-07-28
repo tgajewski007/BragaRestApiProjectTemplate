@@ -1,12 +1,11 @@
 <?php
 namespace braga\project\utils\logger;
 use braga\graylogger\BaseLogger;
+use braga\graylogger\Factory;
 use braga\tools\tools\JsonSerializer;
 use Exception;
 use Monolog\Level;
 use Throwable;
-use braga\graylogger\Factory;
-use Monolog\Logger;
 class PHPLogger extends BaseLogger
 {
 	const NAME = "php";
@@ -37,7 +36,7 @@ class PHPLogger extends BaseLogger
 				case E_RECOVERABLE_ERROR:
 				case E_ALL:
 					$l->error($msg, [
-						"stack" => $stack]);
+						"stack" => $stack ]);
 					throw new Exception($errstr, $errno);
 				case E_CORE_WARNING:
 				case E_COMPILE_WARNING:
@@ -46,12 +45,12 @@ class PHPLogger extends BaseLogger
 				case E_DEPRECATED:
 				case E_USER_DEPRECATED:
 					$l->warning($msg, [
-						"stack" => $stack]);
+						"stack" => $stack ]);
 					break;
 				case E_NOTICE:
 				case E_USER_NOTICE:
 					$l->info($msg, [
-						"stack" => $stack]);
+						"stack" => $stack ]);
 					break;
 			}
 		}

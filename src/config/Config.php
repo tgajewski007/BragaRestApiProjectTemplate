@@ -10,7 +10,7 @@ namespace braga\project\config;
 class Config
 {
 	// -----------------------------------------------------------------------------------------------------------------
-	private static $iniContent;
+	private static array $iniContent = [];
 	// -----------------------------------------------------------------------------------------------------------------
 	public static function putenv($key, $val)
 	{

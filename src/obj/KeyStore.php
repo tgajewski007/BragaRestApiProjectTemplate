@@ -2,8 +2,8 @@
 namespace braga\project\obj;
 use braga\db\BusinesObject;
 use braga\db\Collection;
-use braga\project\dao\KeyStoreDAO;
 use braga\db\mysql\DB;
+use braga\project\dao\KeyStoreDAO;
 /**
  * Created on 08-08-2018 16:31:43
  * @author Tomasz Gajewski
